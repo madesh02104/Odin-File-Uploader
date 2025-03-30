@@ -1,0 +1,28 @@
+<h2><%= folder.name %></h2>
+
+<div class="folder-actions">
+  <a href="/files/upload?folderId=<%= folder.id %>" class="btn btn-primary"
+    >Upload File to Folder</a
+  >
+  <a href="/folders" class="btn">Back to Folders</a>
+</div>
+
+<div class="files-grid">
+  <% if(folder.files && folder.files.length > 0) { %> <%
+  folder.files.forEach(function(file) { %>
+  <div class="file-card <%= getFileTypeClass(file.name) %>">
+    <h4><%= file.name %></h4>
+    <div class="file-meta">
+      <span
+        >Uploaded: <%= new Date(file.createdAt).toLocaleDateString() %></span
+      >
+    </div>
+    <div class="file-actions">
+      <a href="<%= file.url %>" target="_blank" class="btn">View</a>
+      <a href="/files/<%= file.id %>/delete" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+  <% }) %> <% } else { %>
+  <p>No files in this folder yet.</p>
+  <% } %>
+</div>

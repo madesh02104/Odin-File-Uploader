@@ -1,0 +1,41 @@
+<h2>Dashboard</h2>
+
+<div class="dashboard-stats">
+  <div class="stat-card">
+    <h3>Files</h3>
+    <p class="stat-number"><%= filesCount %></p>
+    <a href="/files" class="btn">View All Files</a>
+  </div>
+
+  <div class="stat-card">
+    <h3>Folders</h3>
+    <p class="stat-number"><%= foldersCount %></p>
+    <a href="/folders" class="btn">View All Folders</a>
+  </div>
+</div>
+
+<div class="dashboard-actions">
+  <a href="/files/upload" class="btn btn-primary">Upload New File</a>
+  <a href="/folders/new" class="btn">Create New Folder</a>
+</div>
+
+<h3>Recent Files</h3>
+<div class="files-grid">
+  <% if(recentFiles && recentFiles.length > 0) { %> <%
+  recentFiles.forEach(function(file) { %>
+  <div class="file-card <%= getFileTypeClass(file.name) %>">
+    <h4><%= file.name %></h4>
+    <div class="file-meta">
+      <span
+        >Uploaded: <%= new Date(file.createdAt).toLocaleDateString() %></span
+      >
+    </div>
+    <div class="file-actions">
+      <a href="<%= file.url %>" target="_blank" class="btn">View</a>
+      <a href="/files/<%= file.id %>/delete" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+  <% }); %> <% } else { %>
+  <p>No files uploaded yet.</p>
+  <% } %>
+</div>

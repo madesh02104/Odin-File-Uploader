@@ -1,0 +1,9 @@
+<div class="error-container">
+  <h2><%= message %></h2>
+  <% if (error.status) { %>
+  <h3><%= error.status %></h3>
+  <% } %> <% if (error.stack && process.env.NODE_ENV === 'development') { %>
+  <pre><%= error.stack %></pre>
+  <% } %>
+  <a href="/" class="btn">Back to Home</a>
+</div>

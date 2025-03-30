@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Odin File Uploader</title>
+    <link rel="stylesheet" href="/styles/main.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Odin File Uploader</h1>
+      <% if(typeof user !== 'undefined' && user !== null) { %>
+      <p>
+        Welcome, <%= user.username %> |
+        <a style="color: tomato; margin-left: 4px" href="/auth/logout"
+          >Logout</a
+        >
+      </p>
+      <% } %>
+    </header>
+
+    <div class="container">
+      <% if(typeof user !== 'undefined' && user !== null) { %>
+      <div class="sidebar">
+        <ul>
+          <li><a href="/">Dashboard</a></li>
+          <li><a href="/folders">My Folders</a></li>
+          <li><a href="/files">All Files</a></li>
+          <li><a href="/files/upload">Upload File</a></li>
+        </ul>
+      </div>
+      <% } %>
+
+      <main>
+        <% if(typeof errors !== 'undefined' && errors.length > 0) { %>
+        <div class="alert alert-error">
+          <% errors.forEach(error => { %>
+          <p><%= error.msg %></p>
+          <% }) %>
+        </div>
+        <% } %> <% if(typeof success_msg !== 'undefined' && success_msg.length >
+        0) { %>
+        <div class="alert alert-success"><%= success_msg %></div>
+        <% } %> <% if(typeof error_msg !== 'undefined' && error_msg.length > 0)
+        { %>
+        <div class="alert alert-error"><%= error_msg %></div>
+        <% } %> <%- body %>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; <%= new Date().getFullYear() %> Odin File Uploader</p>
+    </footer>
+  </body>
+</html>

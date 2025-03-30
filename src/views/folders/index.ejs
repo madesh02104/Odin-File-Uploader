@@ -1,0 +1,31 @@
+<h2>My Folders</h2>
+
+<div class="folder-actions">
+  <a href="/folders/new" class="btn btn-primary">Create New Folder</a>
+</div>
+
+<div class="folders-grid">
+  <% if(folders && folders.length > 0) { %> <% folders.forEach(folder => { %>
+  <div class="folder-card">
+    <h3><%= folder.name %></h3>
+    <div class="folder-stats">
+      <span
+        ><%= folder.files.length %> <%= folder.files.length === 1 ? 'file' :
+        'files' %></span
+      >
+      |
+      <small
+        >Created: <%= new Date(folder.createdAt).toLocaleDateString() %></small
+      >
+    </div>
+    <div class="folder-actions">
+      <a href="/folders/<%= folder.id %>" class="btn">Open</a>
+      <a href="/folders/<%= folder.id %>/delete" class="btn btn-danger"
+        >Delete</a
+      >
+    </div>
+  </div>
+  <% }) %> <% } else { %>
+  <p>No folders created yet.</p>
+  <% } %>
+</div>
