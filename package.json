@@ -4,10 +4,9 @@
   "description": "File uploader From Odin Project Curriculum",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "prisma migrate deploy && node src/app.js",
     "dev": "nodemon src/app.js",
-    "deploy": "prisma migrate deploy",
-    "postinstall": "prisma generate"
+    "build": "prisma generate"
   },
   "keywords": [],
   "author": "",
