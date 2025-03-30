@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -17,19 +11,19 @@ model User {
   id       String    @id @default(uuid())
   username String    @unique
   password String
-  sessions Session[]
-  folders  Folder[]
   files    File[]
+  folders  Folder[]
+  sessions Session[]
 }
 
 model Folder {
   id        String   @id @default(uuid())
   name      String
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   files     File[]
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model File {
@@ -37,10 +31,10 @@ model File {
   name      String
   url       String
   folderId  String?
-  folder    Folder?  @relation(fields: [folderId], references: [id], onDelete: Cascade)
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+  folder    Folder?  @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Session {
