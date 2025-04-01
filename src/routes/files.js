@@ -47,22 +47,32 @@ router.get("/upload", async (req, res) => {
 
 // Upload file
 router.post("/upload", upload.single("file"), async (req, res) => {
+  console.log("POST request received at /files/upload");
+
   if (!req.file) {
+    console.error("No file received in the request");
     req.session.error_msg = "Please select a file to upload";
     return res.redirect("/files/upload");
   }
 
   try {
+    console.log(
+      `Uploading file: ${req.file.originalname}, size: ${req.file.size} bytes`
+    );
+
     // Upload to Cloudinary
     let uploadResult;
     const streamUpload = (buffer) => {
       return new Promise((resolve, reject) => {
+        console.log("Starting Cloudinary upload...");
         const stream = cloudinary.uploader.upload_stream(
           { folder: "odin-file-uploader" },
           (error, result) => {
             if (result) {
+              console.log(`Cloudinary upload successful: ${result.secure_url}`);
               resolve(result);
             } else {
+              console.error("Cloudinary upload error:", error);
               reject(error);
             }
           }
@@ -72,9 +82,10 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     };
 
     uploadResult = await streamUpload(req.file.buffer);
+    console.log("File uploaded to Cloudinary successfully");
 
     // Save file record to database
-    await prisma.file.create({
+    const fileRecord = await prisma.file.create({
       data: {
         name: req.file.originalname,
         url: uploadResult.secure_url,
@@ -82,13 +93,16 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         folderId: req.body.folderId || null,
       },
     });
+    console.log(`File record created in database with ID: ${fileRecord.id}`);
 
     req.session.success_msg = "File uploaded successfully";
-    res.redirect("/files");
+    return res.redirect("/files");
   } catch (err) {
-    console.error(err);
-    req.session.error_msg = "Error uploading file";
-    res.redirect("/files/upload");
+    console.error("Error during file upload:", err);
+    req.session.error_msg = `Error uploading file: ${
+      err.message || "Unknown error"
+    }`;
+    return res.redirect("/files/upload");
   }
 });
 
